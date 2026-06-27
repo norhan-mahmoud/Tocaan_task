@@ -1,9 +1,11 @@
 <?php
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -16,7 +18,26 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        $exceptions->shouldRenderJsonWhen(
-            fn (Request $request) => $request->is('api/*'),
-        );
-    })->create();
+
+        $exceptions->shouldRenderJsonWhen(function (Request $request) {
+            return $request->is('api/*');
+        });
+
+        $exceptions->render(function (NotFoundHttpException $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Route not found.',
+            ], 404);
+
+        });
+         $exceptions->render(function (ModelNotFoundException $e, Request $request) {
+
+        return response()->json([
+            'success' => false,
+            'message' => class_basename($e->getModel()) . ' not found.',
+        ], 404);
+
+    });
+    })
+    ->create();

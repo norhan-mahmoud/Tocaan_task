@@ -5,43 +5,52 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Services\AuthService;
+use App\Traits\ApiResponse;
+use Illuminate\Http\JsonResponse;
 
 class AuthController extends Controller
 {
-    public function __construct(
-        private AuthService $authService
-    ) {
-    }
+    use ApiResponse;
 
-    public function login(LoginRequest $request)
+    public function __construct(
+        private readonly AuthService $authService
+    ) {}
+
+    public function login(LoginRequest $request): JsonResponse
     {
-        return response()->json(
+
+        return $this->success(
             $this->authService->login(
                 $request->validated()
-            )
+            ),
+            'Logged in successfully.'
         );
     }
 
-    public function logout()
+    public function logout(): JsonResponse
     {
         $this->authService->logout();
 
-        return response()->json([
-            'message' => 'Logged out successfully',
-        ]);
-    }
-
-    public function refresh()
-    {
-        return response()->json(
-            $this->authService->refresh()
+        return $this->success(
+            null,
+            'Logged out successfully.'
         );
     }
 
-    public function profile()
+    public function refresh(): JsonResponse
     {
-        return response()->json(
-            $this->authService->profile()
+        return $this->success(
+            $this->authService->refresh(),
+            'Token refreshed successfully.'
+        );
+    }
+
+    public function profile(): JsonResponse
+    {
+
+        return $this->success(
+            $this->authService->profile(),
+            'Profile retrieved successfully.'
         );
     }
 }
