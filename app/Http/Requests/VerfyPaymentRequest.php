@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Enums\PaymentMethod;
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -25,10 +24,12 @@ class VerfyPaymentRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            'payment_method' => ['required', new Enum(PaymentMethod::class)],
-            'transaction_id' => ['required', 'string'],
-            //
+            'obj'=>['required', 'array'],
+            'obj.payment_method' => ['required', new Enum(PaymentMethod::class)],
+            'obj.id' => ['sometimes', 'string'],
+            'obj.success' => ['required', 'boolean'],
+            'obj.data' => ['sometimes', 'array'],
+            'obj.data.captured' => ['sometimes', 'boolean'],
         ];
     }
 }

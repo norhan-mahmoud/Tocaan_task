@@ -74,11 +74,11 @@ class PaymobGateway extends BasePaymentGateway implements PaymentGatewayInterfac
         $payment = Payment::query()
             ->where(
                 'transaction_id',
-                $payload['order']['id']
+                $payload['obj']['id']
             )
             ->firstOrFail();
 
-        if ($payload['success'] && $payload['data']['captured']) {
+        if ($payload['obj']['success'] && $payload['obj']['data']['captured']) {
             $payment->update([
                 'status' => PaymentStatus::SUCCESSFUL,
                 'paid_at' => now(),

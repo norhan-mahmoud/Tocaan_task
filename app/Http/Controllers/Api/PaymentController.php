@@ -10,7 +10,10 @@ use App\Models\Order;
 use App\Services\Payments\PaymentService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
-
+/**
+ * @group Payments management
+ * APIs for managing payments
+*/
 class PaymentController extends Controller
 {
     use ApiResponse;
@@ -66,13 +69,12 @@ class PaymentController extends Controller
     }
 
     public function verify(
-        Order $order,
 
         VerfyPaymentRequest $request,
+
     ): JsonResponse {
 
         $payment = $this->paymentService->verify(
-            $order,
             $request->validated()
         );
 

@@ -28,10 +28,10 @@ class PaymentService
         return $gateway->pay($order, $data);
     }
 
-    public function verify(Order $order,
+    public function verify(
         array $payload): Payment
     {
-        $method = PaymentMethod::from($payload['payment_method']);
+        $method = PaymentMethod::from($payload['obj']['payment_method']);
 
         $gateway = $this->gatewayResolver->resolve(
             $method
