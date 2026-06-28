@@ -13,4 +13,11 @@ class GatewayResolver
 
         return app($method->gatewayClass());
     }
+
+    //resolve the gateway based on the payment gateway
+    public function resolveByGateway(string $gateway): PaymentGatewayInterface
+    {
+        $gateway = ucfirst($gateway);
+        
+    }
 }

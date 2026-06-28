@@ -42,7 +42,7 @@ class PaymentApiTest extends TestCase
         $user = User::factory()->create();
 
         $order = Order::factory()->create([
-            'id' => 9998,
+            'id' => 9128,
             'user_id' => $user->id,
             'status' => OrderStatus::CONFIRMED,
         ]);
@@ -55,7 +55,7 @@ class PaymentApiTest extends TestCase
 
         $response = $this
             ->actingAs($user)
-            ->postJson("/api/orders/verify-payment", [
+            ->postJson("/api/orders/paymob/verify-payment", [
                 'obj' => [
                     'id' => '1234567890',
                     'payment_method' => 'visa',
@@ -65,6 +65,8 @@ class PaymentApiTest extends TestCase
                     ],
                 ],
             ]);
+
+
 
         $response->assertOk();
     }

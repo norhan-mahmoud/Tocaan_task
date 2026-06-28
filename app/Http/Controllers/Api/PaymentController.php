@@ -4,12 +4,13 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PayPaymentRequest;
-use App\Http\Requests\VerfyPaymentRequest;
 use App\Http\Resources\PaymentResource;
 use App\Models\Order;
 use App\Services\Payments\PaymentService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+
 /**
  * @group Payments management
  * APIs for managing payments
@@ -68,14 +69,11 @@ class PaymentController extends Controller
         );
     }
 
-    public function verify(
-
-        VerfyPaymentRequest $request,
-
-    ): JsonResponse {
-
+    public function verify(string $gateway, Request $request): JsonResponse
+    {
         $payment = $this->paymentService->verify(
-            $request->validated()
+            $gateway,
+            $request->all()
         );
 
         return $this->success(

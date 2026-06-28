@@ -10,6 +10,7 @@ return [
         'settings' => [
             'integration_id' => env('PAYMOB_INTEGRATION_ID'),
         ],
+        'gateway_class' => App\Services\Payments\Gateways\PaymobGateway::class
     ],
 
     'stripe' => [
@@ -19,6 +20,7 @@ return [
         'settings' => [
             'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
         ],
+        'gateway_class' => App\Services\Payments\Gateways\StripeGateway::class
 
     ],
 
