@@ -118,3 +118,45 @@ If a Postman collection is included in the repository, simply import it and star
 - Ensure the database credentials are correctly configured in the `.env` file before running the migrations.
 - The Paymob gateway must be configured before testing payment-related endpoints.
 - Run `php artisan scribe:generate` again whenever API endpoints or documentation annotations are updated.
+
+
+## Payment Gateway Extensibility
+
+The payment module is designed to be easily extensible by using the **Strategy Pattern** and following the **SOLID** principles.
+
+Each payment method is mapped to its corresponding gateway class inside the `PaymentMethod` enum through the `gatewayClass()` method. The `GatewayResolver` simply resolves the gateway using Laravel's service container, without containing any gateway-specific logic.
+
+### Current Mapping
+
+| Payment Method | Gateway |
+| -------------- | ------- |
+| Visa           | Paymob  |
+| Mastercard     | Paymob  |
+| Meeza          | Paymob  |
+| Wallet         | Paymob  |
+| TBC            | Paymob  |
+| Cash           | Paymob  |
+| Apple Pay      | Stripe  |
+
+### How to Add a New Payment Gateway
+
+1. Create a new gateway class that implements `PaymentGatewayInterface`.
+2. Add the required gateway configuration (API keys, secrets, etc.) in the `.env` file or database.
+3. Register the new payment method in the `PaymentMethod` enum and map it to the gateway class using the `gatewayClass()` method.
+
+Example:
+
+```php
+case GOOGLE_PAY = 'google_pay';
+
+public function gatewayClass(): string
+{
+    return match ($this) {
+        self::GOOGLE_PAY => GooglePayGateway::class,
+        // ...
+    };
+}
+```
+
+No changes are required in the controllers, services, or `GatewayResolver`. The resolver automatically instantiates the correct gateway based on the mapping defined in the enum, making the system easy to extend while complying with the Open/Closed Principle (OCP).
+
