@@ -24,6 +24,6 @@ Route::middleware('auth:api')->group(function () {
     Route::apiResource('orders', OrderController::class);
 
     Route::post('orders/{order}/pay', [PaymentController::class, 'pay']);
-    // Route::post('orders/{order}/verify-payment/{transactionId}', [PaymentController::class, 'verify']);
+    Route::post('orders/{order}/verify-payment', [PaymentController::class, 'verify']);
 
 });

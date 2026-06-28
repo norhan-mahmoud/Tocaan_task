@@ -11,6 +11,8 @@ enum PaymentMethod :string
     case MEEZA = 'meeza';
     case WALLET = 'wallet';
     case APPLE_PAY = 'apple_pay';
+    case TBC = 'tbc';
+    case CASH = 'cash';
 
 
    public function gatewayClass(): string
@@ -19,7 +21,9 @@ enum PaymentMethod :string
             self::VISA,
             self::MASTERCARD,
             self::MEEZA,
-            self::WALLET => PaymobGateway::class,
+            self::WALLET,
+            self::TBC,
+            self::CASH => PaymobGateway::class,
 
             self::APPLE_PAY => StripeGateway::class,
         };

@@ -17,6 +17,7 @@ class Payment extends Model
         'transaction_id',
         'amount',
         'paid_at',
+        'metadata',
     ];
 
     protected $casts = [
@@ -24,6 +25,7 @@ class Payment extends Model
         'paid_at' => 'datetime',
         'status' => PaymentStatus::class,
         'gateway' => PaymentGateway::class,
+        'metadata' => 'array',
     ];
 
     public function order(): BelongsTo

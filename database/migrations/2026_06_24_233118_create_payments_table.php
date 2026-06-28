@@ -29,6 +29,9 @@ return new class extends Migration
                 ->unique();
 
             $table->decimal('amount', 12, 2);
+            //metadata
+            $table->json('metadata')
+                ->nullable();
 
             $table->timestamp('paid_at')
                 ->nullable();

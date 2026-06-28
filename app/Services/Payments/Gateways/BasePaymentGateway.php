@@ -23,7 +23,7 @@ class BasePaymentGateway
                 ->send($method, $this->config['base_url'].$url, [
                     $type => $data,
                 ]);
-               
+
 
             return [
                 'success' => $response->successful(),

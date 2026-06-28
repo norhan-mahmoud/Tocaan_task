@@ -29,6 +29,8 @@ class PaymentResource extends JsonResource
 
             'paid_at' => $this->paid_at,
 
+            'metadata' => $this->metadata,
+
             'created_at' => $this->created_at,
         ];
     }
